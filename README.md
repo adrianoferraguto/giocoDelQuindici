@@ -2,6 +2,7 @@
 Un'implementazione del "gioco del quindici" scritta in Processing per un progetto universitario
 
 Il repository contiene uno sketch in Processing che propone una soluzione al progetto assegnato il 10/02/2016 nell’ambito dell’insegnamento di Interazione e Multimedia dell’Università di Catania.
+
 I file del progetto sono così strutturati:
 - giocoDelQuindici.pde contiene le funzioni base dello sketch
 - gioco.pde contiene la classe gioco che implementa le funzionalità del gioco
