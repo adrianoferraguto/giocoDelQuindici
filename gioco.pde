@@ -1,11 +1,14 @@
 class gioco{
   private
     int[] griglia;
+    PImage[] grigliaImm = new PImage[16];
     int mosse;
     int tempo;
     boolean inGioco = false;
     boolean vittoria = false;
     int bestTempo, bestMosse;
+    PImage immagine = null;
+    boolean conImmagine = false;
   public
     gioco(){
     }
@@ -42,9 +45,27 @@ class gioco{
       }*/
       return griglia;
     }
+    public void caricaImmagine(){
+      g.conImmagine = true;
+      selectInput("Seleziona un'immagine", "imgSelezionata");
+    }
     void disegnaGriglia(){
       if(inGioco==false) return;
       int[] griglia = this.griglia;
+      //Creo la griglia di immagini a partire dall'immagine che ho nelle proprietà
+      if(this.conImmagine && this.immagine!=null){
+        int i=0, j=0, k=0;
+        while(i<200){
+          j=0;
+          while(j<200){
+            grigliaImm[k]=this.immagine.get(j, i, 50, 50);
+            j+=50;
+            k++;
+          }
+          i+=50;
+        }
+      }
+      //Disegno la griglia e l'eventuale griglia di immagini
       fill(255);
       stroke(255);
       rect(0,100,400,500);
@@ -55,13 +76,17 @@ class gioco{
         stroke(0);
         rect(i%4*100, i/4*100+100, i%4*100+100, i/4*100+100+100);
         fill(0);
-        if (griglia[i] != 0) 
+        if (griglia[i] != 0){
           text(griglia[i], i%4*100+100/2, i/4*100+100+100/2);
+          if (this.conImmagine && this.immagine!=null){
+            image(grigliaImm[griglia[i]], i%4*100, i/4*100+100, 100, 100);
+          }
+        }
       }
     }
     void click(int x, int y){
       if(inGioco == false) return;
-      // Interpreto la posizione del mouse per conoscere la casella cliccata
+      //Interpreto la posizione del mouse per conoscere la casella cliccata
       int casella = (floor(x/100)+(floor(y/100)*4))-4;
       if(casella>=0) muovi(casella);
     }
@@ -70,6 +95,7 @@ class gioco{
               scambiabileSx = true,
               scambiabileSu = true,
               scambiabileGiu = true;
+      //Stabilisco le condizioni nel quale non si può fare uno scambio
       if(c==3 || c==7 || c==11 || c==15) scambiabileDx = false;
       if(c==0 || c==4 || c==8 || c==12) scambiabileSx = false;
       if(c==0 || c==1 || c==2 || c==3) scambiabileSu = false;
@@ -90,6 +116,7 @@ class gioco{
     void vittoria(){
       this.inGioco = false;
       vittoria = true;
+      //Controllo gli highscore ed eventualmente imposto il nuovo punteggio come tale
       String m = str(bestMosse),
              t = str(bestTempo);
       if(this.mosse<this.bestMosse){

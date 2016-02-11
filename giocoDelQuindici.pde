@@ -42,6 +42,7 @@ void draw(){
     if (g.getVittoria())
       text("Complimenti! Hai vinto!",10,110);
   }
+  textSize(18);
   fill(255);
   rect(220,10,160,30);
   String t;
@@ -49,5 +50,27 @@ void draw(){
   else t = "Ricomincia";
   fill(0);
   text(t,220,10);
-  if (mousePressed && mouseX>220 && mouseX<380 && mouseY>10 && mouseY<40) g.iniziaPartita();
+  
+  if(!g.conImmagine){
+    fill(255);
+    rect(220,50,160,30);
+    fill(0);
+    text("Carica immagine",220,50);
+    textSize(24);
+  }
+}
+
+void mouseReleased(){
+  if (mouseX>220 && mouseX<380 && mouseY>50 && mouseY<80) if(!g.conImmagine) g.caricaImmagine();
+  if (mouseX>220 && mouseX<380 && mouseY>10 && mouseY<40) g.iniziaPartita();
+}
+
+public void imgSelezionata(File file){
+  if (file == null) {
+    g.immagine = null;
+    g.conImmagine = false;
+  } else {
+    g.immagine = loadImage(file.getAbsolutePath());
+    g.conImmagine = true;
+  }
 }
